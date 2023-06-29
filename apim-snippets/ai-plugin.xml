@@ -1,0 +1,48 @@
+<policies>
+    <inbound>
+        <base />
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+
+                var apiInfo = new JObject();
+                                
+                // Metadata
+                apiInfo.Add("schema_version","v1");
+                apiInfo.Add("name_for_human","To Do List");
+                apiInfo.Add("name_for_model","Items");
+                apiInfo.Add("description_for_human","Manage your to do list.");
+                apiInfo.Add("description_for_model", "Plugin for managing to do list items.");
+                apiInfo.Add("contact_email", "contact@example.com");
+                apiInfo.Add("logo_url", "https://image.pngaaa.com/776/449776-middle.png");
+                apiInfo.Add("legal_info_url", "http://example.com/legal");
+
+                // Auth
+                var authType = new JObject();
+                authType.Add("type", "none");                
+                apiInfo.Add("auth", authType);
+
+                // API
+                var apiDetails = new JObject();
+                apiDetails.Add("type", "openapi");
+                apiDetails.Add("url", "https://example.com/openapi.yaml");
+                apiInfo.Add("api", apiDetails);                             
+                
+                return apiInfo.ToString();
+                
+            }</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
